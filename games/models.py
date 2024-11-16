@@ -8,6 +8,7 @@ class Game(models.Model):
         ("waiting", "Waiting"),
         ("playing", "Playing"),
         ("finished", "Finished"),
+        ("cancelled", "Cancelled"),
     ]
 
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="waiting")
@@ -20,6 +21,7 @@ class Game(models.Model):
 
     class Meta:
         ordering = ["-created_at"]
+        db_table = "games"
 
 
 class PlayerCard(models.Model):
@@ -28,7 +30,10 @@ class PlayerCard(models.Model):
     card_numbers = ArrayField(ArrayField(models.IntegerField(), size=5), size=5)
     selected_numbers = ArrayField(models.IntegerField(), default=list)
     is_winner = models.BooleanField(default=False)
+    is_disqualified = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
+
 
     class Meta:
         unique_together = ["user", "game"]
+        db_table = "player_cards"
