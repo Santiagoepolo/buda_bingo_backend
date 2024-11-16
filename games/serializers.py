@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from games.models import Game, PlayerCard
+from .models import Game, PlayerCard
 
 
 class UserSerializer(serializers.ModelSerializer):

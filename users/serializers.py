@@ -4,9 +4,18 @@ from django.contrib.auth.password_validation import validate_password
 
 
 class UserSerializer(serializers.ModelSerializer):
+    played_games = serializers.SerializerMethodField()
+    won_games = serializers.SerializerMethodField()
+
+    def get_played_games(self, obj):
+        return obj.playercard_set.filter(game__status="finished").count()
+
+    def get_won_games(self, obj):
+        return obj.won_games.count()
+
     class Meta:
         model = User
-        fields = ("id", "username", "email")
+        fields = ("id", "username", "email", "played_games", "won_games")
 
 
 class RegisterSerializer(serializers.ModelSerializer):
